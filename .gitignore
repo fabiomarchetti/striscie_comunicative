@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Documentazione di design (handoff/prototipo HTML): non rilevante per il build
+/design_handoff_segnami_flutter/
+
+# Screenshot di test generati da `flutter screenshot`
+flutter_*.png

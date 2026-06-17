@@ -8,6 +8,7 @@ import '../widgets/common.dart';
 import '../widgets/dashed_border.dart';
 import '../widgets/media_drop_box.dart';
 import '../widgets/media_thumb.dart';
+import '../widgets/media_video.dart';
 
 /// Schermata 2 — "Crea attività".
 class AttivitaScreen extends StatelessWidget {
@@ -66,13 +67,23 @@ class _AttivitaCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _BoxImmagini(cardIndex: cardIndex, bozza: bozza)),
-              const SizedBox(width: 16),
-              Expanded(child: _BoxVideo(cardIndex: cardIndex, bozza: bozza)),
-            ],
+          // Coppia di box ridotta: occupa il 70% della larghezza della card,
+          // allineata a sinistra (riduce anche l'altezza del box Video 16/9).
+          Align(
+            alignment: Alignment.centerLeft,
+            child: FractionallySizedBox(
+              widthFactor: 0.7,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: _BoxImmagini(cardIndex: cardIndex, bozza: bozza),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(child: _BoxVideo(cardIndex: cardIndex, bozza: bozza)),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -134,30 +145,37 @@ class _BoxImmagini extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.read<AppState>();
+    final dropBox = MediaDropBox(
+      label: 'Aggiungi immagine',
+      circleSize: 38,
+      onTap: () async {
+        final path = await MediaPicker.instance.scegliImmagine();
+        if (path != null) {
+          state.aggiungiImmagineAttivita(cardIndex, path);
+        }
+      },
+    );
     return _SoftBox(
       icon: Icons.photo_outlined,
       titolo: 'Immagini',
-      child: GridView.count(
-        crossAxisCount: 3,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          for (final percorso in bozza.immagini)
-            MediaThumb(percorsoRelativo: percorso),
-          MediaDropBox(
-            label: 'Aggiungi immagine',
-            circleSize: 38,
-            onTap: () async {
-              final path = await MediaPicker.instance.scegliImmagine();
-              if (path != null) {
-                state.aggiungiImmagineAttivita(cardIndex, path);
-              }
-            },
-          ),
-        ],
-      ),
+      // Senza immagini, il box "Aggiungi immagine" è centrato nel contenitore;
+      // con immagini presenti torna l'ultima cella della griglia 3 colonne.
+      child: bozza.immagini.isEmpty
+          ? Center(
+              child: SizedBox(width: 120, height: 120, child: dropBox),
+            )
+          : GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                for (final percorso in bozza.immagini)
+                  MediaThumb(percorsoRelativo: percorso),
+                dropBox,
+              ],
+            ),
     );
   }
 }
@@ -173,10 +191,10 @@ class _BoxVideo extends StatelessWidget {
     return _SoftBox(
       icon: Icons.play_circle_outline_rounded,
       titolo: 'Video',
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: bozza.video == null
-            ? MediaDropBox(
+      child: bozza.video == null
+          ? AspectRatio(
+              aspectRatio: 16 / 9,
+              child: MediaDropBox(
                 label: 'Carica video',
                 circleSize: 48,
                 onTap: () async {
@@ -185,9 +203,9 @@ class _BoxVideo extends StatelessWidget {
                     state.setVideoAttivita(cardIndex, path);
                   }
                 },
-              )
-            : _VideoCaricato(percorso: bozza.video!),
-      ),
+              ),
+            )
+          : _VideoCaricato(percorso: bozza.video!),
     );
   }
 }
@@ -198,39 +216,19 @@ class _VideoCaricato extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nome = percorso.split('/').last;
-    return DashedBorder(
-      color: AppColors.primary,
-      radius: AppRadii.dropBox,
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.softSurface,
-          borderRadius: BorderRadius.circular(AppRadii.dropBox),
-        ),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.movie_outlined,
-              size: 36,
-              color: AppColors.primary,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              nome,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTheme.mono(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textSecondaryAlt,
-              ),
-            ),
-          ],
+    // Box compatto: larghezza massima ridotta, altezza dal rapporto del video.
+    // Tocca il video per riprodurlo/metterlo in pausa.
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 240),
+        child: DashedBorder(
+          color: AppColors.primary,
+          radius: AppRadii.dropBox,
+          child: MediaVideo(
+            percorsoRelativo: percorso,
+            radius: AppRadii.dropBox,
+          ),
         ),
       ),
     );

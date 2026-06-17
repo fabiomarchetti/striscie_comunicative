@@ -59,6 +59,31 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
+  # Generazione delle icone applicazione da assets/megafono.png.
+  flutter_launcher_icons: ^0.14.1
+
+# Configurazione icone: `dart run flutter_launcher_icons` rigenera tutte le
+# icone (Android legacy + adaptive, iOS, web, macOS, Windows) da un'unica
+# sorgente, sostituendo quelle di default di Flutter.
+flutter_launcher_icons:
+  image_path: "assets/megafono.png"
+  android: "ic_launcher"
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+  # Adaptive icon Android: megafono con margine di sicurezza su sfondo bianco.
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/megafono_foreground.png"
+  web:
+    generate: true
+    background_color: "#FFFFFF"
+    theme_color: "#9C4A2B"
+  macos:
+    generate: true
+  windows:
+    generate: true
+    icon_size: 256
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
