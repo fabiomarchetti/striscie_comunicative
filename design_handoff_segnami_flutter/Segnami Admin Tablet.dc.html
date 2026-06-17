@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  input, button, textarea { font-family: inherit; }
+  button { cursor: pointer; border: none; background: none; padding: 0; }
+  ::placeholder { color: #A7958C; }
+  .tscroll::-webkit-scrollbar { width: 8px; height: 8px; }
+  .tscroll::-webkit-scrollbar-thumb { background: #DBC8BF; border-radius: 8px; }
+  .tscroll::-webkit-scrollbar-track { background: transparent; }
+  @keyframes snackUp { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+</style>
+</helmet>
+
+<div style="min-height:100vh;width:100%;background:linear-gradient(160deg,#CDD2D8,#C2C7CE);font-family:'Roboto Flex',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;padding:34px 24px 48px;gap:22px;">
+
+  <div style="text-align:center;max-width:760px;">
+    <div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#5E6168;text-transform:uppercase;">Prototipo · Tablet 10" landscape · Android Material 3</div>
+    <div style="font-size:26px;font-weight:700;color:#26211D;margin-top:7px;letter-spacing:-0.4px;">Segnami — Composizione frasi LIS</div>
+    <div style="font-size:14px;font-weight:500;color:#55585F;margin-top:6px;line-height:1.5;">Strumento personale a utente singolo: componi frasi abbinando i componenti (soggetto · verbo · complemento) e consulta il dizionario dei segni. Il database è simulato — lo schema SQLite mostrato è pronto per <span style="font-family:'Roboto Mono',monospace;font-size:13px;">sqflite</span>.</div>
+  </div>
+
+  <!-- ===================== TABLET BEZEL ===================== -->
+  <div style="background:#0A0A0C;border-radius:30px;padding:13px;box-shadow:0 50px 90px rgba(40,30,22,0.34), 0 0 0 1px rgba(0,0,0,0.2);position:relative;">
+    <div style="position:absolute;top:50%;left:7px;transform:translateY(-50%);width:6px;height:6px;border-radius:6px;background:#26262B;"></div>
+    <div style="width:1280px;height:800px;border-radius:16px;overflow:hidden;background:#FFF8F5;position:relative;display:flex;flex-direction:column;color:#221A15;">
+
+      <!-- status bar -->
+      <div style="height:28px;flex-shrink:0;display:flex;align-items:center;padding:0 18px;background:#FFF8F5;">
+        <span style="font-size:12px;font-weight:600;color:#53433C;">9:41</span>
+        <span style="flex:1;"></span>
+        <span style="font-size:12px;font-weight:600;color:#53433C;margin-right:10px;">Segnami Edu</span>
+        <svg width="16" height="12" viewBox="0 0 18 13" style="margin-right:7px;"><path d="M9 3.4c2.3 0 4.4.9 5.9 2.4l1.1-1.1A9.6 9.6 0 0 0 9 1.6 9.6 9.6 0 0 0 2 4.7l1.1 1.1C4.6 4.3 6.7 3.4 9 3.4z" fill="#53433C"></path><path d="M9 7c1.4 0 2.6.5 3.5 1.4l1.1-1.1A6.4 6.4 0 0 0 9 5.3a6.4 6.4 0 0 0-4.6 2L5.5 8.4C6.4 7.5 7.6 7 9 7z" fill="#53433C"></path><circle cx="9" cy="11" r="1.5" fill="#53433C"></circle></svg>
+        <svg width="22" height="12" viewBox="0 0 24 13"><rect x="0.5" y="0.5" width="20" height="12" rx="3" stroke="#53433C" fill="none"></rect><rect x="2" y="2" width="15" height="9" rx="1.6" fill="#53433C"></rect><rect x="21.5" y="4" width="2" height="5" rx="1" fill="#53433C"></rect></svg>
+      </div>
+
+      <!-- body -->
+      <div style="flex:1;display:flex;min-height:0;">
+
+        <!-- ===== NAVIGATION RAIL ===== -->
+        <div style="width:96px;flex-shrink:0;background:#F7EBE3;display:flex;flex-direction:column;align-items:center;padding:14px 0 16px;">
+          <div style="width:44px;height:44px;border-radius:13px;background:linear-gradient(150deg,#C0432A,#9C4A2B);display:grid;place-items:center;box-shadow:0 6px 14px rgba(156,74,43,0.32);margin-bottom:22px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11V5.6a1.4 1.4 0 0 1 2.8 0V11"></path><path d="M11.8 11V4.6a1.4 1.4 0 0 1 2.8 0V11"></path><path d="M14.6 11V6.2a1.4 1.4 0 0 1 2.8 0V12"></path><path d="M6.2 8.6a1.4 1.4 0 0 1 2.8 0V12"></path>
+              <path d="M17.4 12v3.2a6 6 0 0 1-6 6h-1a6 6 0 0 1-5.2-3.1l-1.9-3.3c-.5-.9.1-2 1.1-2.1.6-.1 1.2.2 1.6.7l1 1.3"></path>
+            </svg>
+          </div>
+
+          <button onClick="{{ navComunica }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;padding:3px 0;">
+            <div style="{{ navComunicaIndStyle }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ navComunicaIcon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1z"></path><path d="M8 9.5h8M8 12.5h5"></path></svg>
+            </div>
+            <span style="{{ navComunicaLabel }}">Crea<br>striscie<br>comunicative</span>
+          </button>
+
+          <button onClick="{{ navAttivita }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;padding:3px 0;margin-top:6px;">
+            <div style="{{ navAttivitaIndStyle }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ navAttivitaIcon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 9-9"></path><path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11"></path></svg>
+            </div>
+            <span style="{{ navAttivitaLabel }}">Crea<br>attività</span>
+          </button>
+
+          <button onClick="{{ navFrasi }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;padding:3px 0;margin-top:6px;">
+            <div style="{{ navFrasiIndStyle }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ navFrasiIcon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path><path d="M8 9h8M8 13h8M8 17h5"></path></svg>
+            </div>
+            <span style="{{ navFrasiLabel }}">Abbina<br>striscie ed<br>attività</span>
+          </button>
+
+          <button onClick="{{ navEsplora }}" style="display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;padding:3px 0;margin-top:6px;">
+            <div style="{{ navEsploraIndStyle }}">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ navEsploraIcon }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="2"></rect><path d="M3.5 9h17M9 9v11"></path></svg>
+            </div>
+            <span style="{{ navEsploraLabel }}">Al<br>lavoro</span>
+          </button>
+
+          <span style="flex:1;"></span>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#85736B" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6" stroke-linecap="round"></path><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"></path></svg>
+            <span style="font-size:10px;font-weight:700;color:#85736B;">{{ dbTotal }} righe</span>
+          </div>
+        </div>
+
+        <!-- ===== MAIN ===== -->
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#FFF8F5;">
+
+          <!-- top app bar -->
+          <div style="height:74px;flex-shrink:0;display:flex;align-items:center;padding:0 30px;border-bottom:1px solid #EFE0D8;">
+            <div style="flex:1;">
+              <div style="font-size:22px;font-weight:700;color:#26211D;letter-spacing:-0.3px;">{{ barTitle }}</div>
+              <div style="font-size:13px;font-weight:500;color:#6E5F57;">{{ barSubtitle }}</div>
+            </div>
+            <sc-if value="{{ isEsplora }}" hint-placeholder-val="{{ false }}">
+              <div style="position:relative;width:280px;">
+                <select value="{{ striscaSel }}" onChange="{{ setStriscaSel }}" style="appearance:none;width:100%;height:44px;border-radius:22px;border:1px solid #DBC8BF;background:#FFF8F5;padding:0 42px 0 16px;font-family:inherit;font-size:14px;font-weight:600;color:#26211D;outline:none;cursor:pointer;">
+                  <sc-for list="{{ striscaOptions }}" as="o" hint-placeholder-count="4">
+                    <option value="{{ o.value }}">{{ o.label }}</option>
+                  </sc-for>
+                </select>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"></path></svg>
+              </div>
+            </sc-if>
+            <sc-if value="{{ isComunica }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:center;gap:9px;">
+                <div style="position:relative;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A7958C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1z"></path></svg>
+                  <input value="{{ striscaNome }}" onChange="{{ setStriscaNome }}" placeholder="Nome della striscia…" style="height:44px;width:240px;border-radius:22px;border:1px solid #DBC8BF;background:#FFF8F5;padding:0 16px 0 38px;font-size:14px;font-weight:600;color:#26211D;outline:none;">
+                </div>
+                <button onClick="{{ saveStrisca }}" title="Salva striscia" style="height:44px;padding:0 18px 0 14px;border-radius:22px;display:flex;align-items:center;gap:8px;background:#9C4A2B;color:#fff;font-size:14px;font-weight:600;box-shadow:0 4px 12px rgba(156,74,43,0.28);" style-hover="background:#85391F;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h10l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path><path d="M8 4v5h7"></path></svg>
+                  Salva
+                </button>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- content -->
+          <div class="tscroll" style="flex:1;overflow-y:auto;padding:24px 30px 30px;">
+
+            <!-- ============ COMUNICAZIONI ============ -->
+            <sc-if value="{{ isComunica }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="display:flex;align-items:stretch;gap:14px;">
+            <div style="background: #fff; border: 1px solid #EAD9D0; border-radius: 22px; padding: 20px; flex:1; min-width:0; box-shadow: 0 8px 24px rgba(40,30,22,0.06);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+                  <span style="width:30px;height:30px;border-radius:30px;background:#FFDBCB;color:#3A0A00;font-size:14px;font-weight:700;display:grid;place-items:center;">1</span>
+                  <span style="font-size:16px;font-weight:700;color:#26211D;">Striscia 1</span>
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;gap:14px;">
+                  <button onClick="{{ comunicaSoon }}" title="Aggiungi immagine" style="width: 138px; height: 98px; border-radius: 16px; background: #FCF1EB; border: 2px dashed #D3A98E; display: flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.15; flex-direction: column; border-width: 2px; margin-left: 8px; margin-right: 8px;" style-hover="background:#F7E6DC;border-color:#9C4A2B;">
+                    <div style="width:46px;height:46px;border-radius:46px;background:#9C4A2B;display:grid;place-items:center;box-shadow:0 4px 12px rgba(156,74,43,0.28);">
+                      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                    </div>
+                    <span style="font-size:13.5px;font-weight:700;color:#9C4A2B;">Aggiungi immagine</span>
+                  </button>
+                </div>
+              </div>
+                  
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- ============ CREA ATTIVITÀ ============ -->
+            <sc-if value="{{ isAttivita }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="background:#fff;border:1px solid #EAD9D0;border-radius:22px;padding:20px;box-shadow:0 8px 24px rgba(40,30,22,0.06);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+                  <span style="width:30px;height:30px;border-radius:30px;background:#FFDBCB;color:#3A0A00;font-size:14px;font-weight:700;display:grid;place-items:center;">1</span>
+                  <span style="font-size:16px;font-weight:700;color:#26211D;">Attività 1</span>
+                </div>
+                <div style="display:flex;gap:16px;align-items:stretch;">
+
+                  <!-- BOX IMMAGINI (multi) -->
+                  <div style="flex:1;min-width:0;background:#FCF1EB;border:1px solid #EFE0D8;border-radius:18px;padding:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:13px;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="8.5" cy="9.5" r="1.6"></circle><path d="M21 16l-5-5L5 20"></path></svg>
+                      <span style="font-size:14px;font-weight:700;color:#26211D;">Immagini</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                      <button onClick="{{ addAttivita }}" title="Aggiungi immagine" style="aspect-ratio: 1/1; border-radius: 13px; background: #FFF8F5; border: 2px dashed #D3A98E; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; line-height: 1.6; margin-left: 20px; margin-right: 24px; border-width: 2px; border-style: solid; text-transform: lowercase; position: relative; left: 175px; top: 52px; padding-right: 0px; margin-top: 5px" style-hover="background:#F7E6DC;border-color:#9C4A2B;">
+                        <div style="width:38px;height:38px;border-radius:38px;background:#9C4A2B;display:grid;place-items:center;box-shadow:0 4px 10px rgba(156,74,43,0.28);">
+                          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                        </div>
+                        <span style="font-size:12px;font-weight:700;color:#9C4A2B;text-align:center;line-height:1.2;">Aggiungi<br>immagine</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- BOX VIDEO -->
+                  <div style="flex:1;min-width:0;background:#FCF1EB;border:1px solid #EFE0D8;border-radius:18px;padding:16px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:13px;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M10 9l5 3-5 3z" fill="#9C4A2B" stroke="none"></path></svg>
+                      <span style="font-size:14px;font-weight:700;color:#26211D;">Video</span>
+                    </div>
+                    <button onClick="{{ addAttivita }}" title="Carica video" style="width:100%;aspect-ratio:16/9;border-radius:13px;background:#FFF8F5;border:2px dashed #D3A98E;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;" style-hover="background:#F7E6DC;border-color:#9C4A2B;">
+                      <div style="width:48px;height:48px;border-radius:48px;background:#9C4A2B;display:grid;place-items:center;box-shadow:0 4px 12px rgba(156,74,43,0.28);">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                      </div>
+                      <span style="font-size:13px;font-weight:700;color:#9C4A2B;">Carica video</span>
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- BANNER: aggiungi altra attività -->
+              <button onClick="{{ addAttivita }}" title="Aggiungi attività" style="width:100%;margin-top:16px;height:64px;border-radius:18px;background:#FCF1EB;border:2px dashed #D3A98E;display:flex;align-items:center;justify-content:center;gap:11px;" style-hover="background:#F7E6DC;border-color:#9C4A2B;">
+                <div style="width:36px;height:36px;border-radius:36px;background:#9C4A2B;display:grid;place-items:center;box-shadow:0 4px 10px rgba(156,74,43,0.28);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg>
+                </div>
+                <span style="font-size:15px;font-weight:700;color:#9C4A2B;">Aggiungi attività</span>
+              </button>
+            </div>
+            </sc-if>
+
+            <!-- ============ FRASI ============ -->
+            <sc-if value="{{ isFrasi }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <!-- seleziona striscia -->
+              <div style="font-size:13px;font-weight:700;color:#6E5F57;margin:0 0 10px;">1 · Seleziona striscia</div>
+              <div style="position:relative;width:320px;">
+                <select value="{{ striscaSel }}" onChange="{{ setStriscaSel }}" style="appearance:none;width:100%;height:50px;border-radius:14px;border:1px solid #DBC8BF;background:#FFF8F5;padding:0 44px 0 16px;font-family:inherit;font-size:15px;font-weight:600;color:#26211D;outline:none;cursor:pointer;">
+                  <sc-for list="{{ striscaOptions }}" as="o" hint-placeholder-count="4">
+                    <option value="{{ o.value }}">{{ o.label }}</option>
+                  </sc-for>
+                </select>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"></path></svg>
+              </div>
+
+              <!-- anteprima striscia -->
+              <div style="font-size:13px;font-weight:700;color:#6E5F57;margin:22px 0 10px;">2 · Anteprima striscia</div>
+              <div style="background:#F0E3DB;border-radius:18px;padding:18px 20px;">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.5px;color:#6E5F57;text-transform:uppercase;margin-bottom:9px;">Striscia selezionata</div>
+                <span style="display:inline-flex;align-items:center;gap:8px;background:#FFDBCB;color:#3A0A00;font-size:15px;font-weight:700;padding:8px 16px;border-radius:11px;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H9l-4 4V6a1 1 0 0 1 1-1z"></path></svg>
+                  {{ striscaSelLabel }}
+                </span>
+              </div>
+
+              <!-- seleziona attività -->
+              <div style="font-size:13px;font-weight:700;color:#6E5F57;margin:22px 0 10px;">3 · Seleziona attività</div>
+              <div style="position:relative;width:320px;">
+                <select value="{{ attivitaSel }}" onChange="{{ setAttivitaSel }}" style="appearance:none;width:100%;height:50px;border-radius:14px;border:1px solid #DBC8BF;background:#FFF8F5;padding:0 44px 0 16px;font-family:inherit;font-size:15px;font-weight:600;color:#26211D;outline:none;cursor:pointer;">
+                  <sc-for list="{{ attivitaOptions }}" as="o" hint-placeholder-count="4">
+                    <option value="{{ o.value }}">{{ o.label }}</option>
+                  </sc-for>
+                </select>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9C4A2B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;"><path d="M6 9l6 6 6-6"></path></svg>
+              </div>
+
+              <!-- anteprima attività -->
+              <div style="font-size:13px;font-weight:700;color:#6E5F57;margin:22px 0 10px;">4 · Anteprima attività</div>
+              <div style="background:#F0E3DB;border-radius:18px;padding:18px 20px;">
+                <div style="font-size:11.5px;font-weight:700;letter-spacing:.5px;color:#6E5F57;text-transform:uppercase;margin-bottom:9px;">Attività selezionata</div>
+                <span style="display:inline-flex;align-items:center;gap:8px;background:#C9EFD6;color:#00210F;font-size:15px;font-weight:700;padding:8px 16px;border-radius:11px;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2E7D52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 9-9"></path><path d="M21 12v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h11"></path></svg>
+                  {{ attivitaSelLabel }}
+                </span>
+              </div>
+
+              <!-- salva in archivio -->
+              <div style="display:flex;justify-content:flex-end;margin-top:24px;">
+                <button onClick="{{ saveFrase }}" style="height:52px;padding:0 26px;border-radius:18px;display:flex;align-items:center;gap:10px;background:#9C4A2B;color:#fff;font-size:15px;font-weight:700;box-shadow:0 6px 16px rgba(156,74,43,0.28);" style-hover="background:#85391F;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h10l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"></path><path d="M8 4v5h7"></path></svg>
+                  Salva in archivio
+                </button>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- ============ ESPLORA ============ -->
+            <sc-if value="{{ isEsplora }}" hint-placeholder-val="{{ false }}">
+            <div></div>
+            </sc-if>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- snackbar -->
+      <sc-if value="{{ snackShow }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:60;background:#382E29;color:#FFEDE5;font-size:14px;font-weight:600;padding:14px 20px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.28);display:flex;align-items:center;gap:10px;animation:snackUp .26s ease;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB59B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"></path></svg>
+          {{ snackMsg }}
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  KEY = 'segnami_admin_db_single_v1';
+
+  typeMeta = {
+    soggetto:    { label:'Soggetto',    c:'#3F5BA9', cont:'#DEE3FF', on:'#00164F' },
+    verbo:       { label:'Verbo',       c:'#C0432A', cont:'#FFDAD0', on:'#3A0500' },
+    complemento: { label:'Complemento', c:'#2E7D52', cont:'#C9EFD6', on:'#00210F' },
+  };
+
+  seed() {
+    return {
+      componenti: [
+        { id:1, parola:'Io', tipo:'soggetto', video:'io.mp4' },
+        { id:2, parola:'Tu', tipo:'soggetto', video:'tu.mp4' },
+        { id:3, parola:'Mamma', tipo:'soggetto', video:'mamma.mp4' },
+        { id:4, parola:'Bambino', tipo:'soggetto', video:'bambino.mp4' },
+        { id:5, parola:'Amico', tipo:'soggetto', video:'amico.mp4' },
+        { id:6, parola:'mangiare', tipo:'verbo', video:'mangiare.mp4' },
+        { id:7, parola:'bere', tipo:'verbo', video:'bere.mp4' },
+        { id:8, parola:'volere', tipo:'verbo', video:'volere.mp4' },
+        { id:9, parola:'giocare', tipo:'verbo', video:'giocare.mp4' },
+        { id:10, parola:'leggere', tipo:'verbo', video:'leggere.mp4' },
+        { id:11, parola:'casa', tipo:'complemento', video:'casa.mp4' },
+        { id:12, parola:'mela', tipo:'complemento', video:'mela.mp4' },
+        { id:13, parola:'libro', tipo:'complemento', video:'libro.mp4' },
+        { id:14, parola:'acqua', tipo:'complemento', video:'acqua.mp4' },
+        { id:15, parola:'gelato', tipo:'complemento', video:'gelato.mp4' },
+        { id:16, parola:'palla', tipo:'complemento', video:'palla.mp4' },
+      ],
+      frasi: [
+        { id:1, id_soggetto:1, id_verbo:8, id_complemento:15, creato:'2025-10-05' },
+        { id:2, id_soggetto:3, id_verbo:10, id_complemento:13, creato:'2025-10-06' },
+        { id:3, id_soggetto:4, id_verbo:9, id_complemento:16, creato:'2025-10-22' },
+        { id:4, id_soggetto:2, id_verbo:7, id_complemento:14, creato:'2025-10-25' },
+        { id:5, id_soggetto:1, id_verbo:6, id_complemento:12, creato:'2025-11-02' },
+      ],
+      strisce: [],
+    };
+  }
+
+  buildInitial() {
+    let db = null, nextId = null;
+    try {
+      const raw = localStorage.getItem(this.KEY);
+      if (raw) { const p = JSON.parse(raw); db = p.db; nextId = p.nextId; }
+    } catch (_) {}
+    if (!db) db = this.seed();
+    if (!nextId) {
+      const mx = (arr) => arr.reduce((m, x) => Math.max(m, x.id), 0) + 1;
+      nextId = { c: mx(db.componenti), f: mx(db.frasi) };
+    }
+    if (!db.strisce) db.strisce = [];
+    if (nextId.s == null) nextId.s = db.strisce.reduce((m, x) => Math.max(m, x.id), 0) + 1;
+    return {
+      screen: 'comunica',
+      db, nextId,
+      striscaNome: '',
+      frase: { sog:null, ver:null, comp:null },
+      esplora: { mode:'frasi' },
+      snack: null,
+    };
+  }
+
+  state = this.buildInitial();
+  _savedDb = this.state.db;
+  _savedNextId = this.state.nextId;
+
+  componentDidUpdate() {
+    const { db, nextId } = this.state;
+    if (db === this._savedDb && nextId === this._savedNextId) return;
+    this._savedDb = db; this._savedNextId = nextId;
+    try { localStorage.setItem(this.KEY, JSON.stringify({ db, nextId })); } catch (_) {}
+  }
+  componentWillUnmount() { clearTimeout(this._snackT); }
+
+  flash(msg) {
+    this.setState({ snack: msg });
+    clearTimeout(this._snackT);
+    this._snackT = setTimeout(() => this.setState({ snack: null }), 2600);
+  }
+
+  fmt(iso) {
+    if (!iso) return '';
+    const p = iso.split('-');
+    return p.length === 3 ? (p[2] + '/' + p[1] + '/' + p[0]) : iso;
+  }
+  today() { const d = new Date(); const z = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' + z(d.getDate()); }
+
+  // ---- frasi ----
+  pickFrase(slot, id) { this.setState(st => ({ frase: { ...st.frase, [slot]: st.frase[slot] === id ? null : id } })); }
+  saveFrase() {
+    const fr = this.state.frase;
+    if (!(fr.sog && fr.ver && fr.comp)) { this.flash('Seleziona soggetto, verbo e complemento'); return; }
+    this.setState(st => {
+      const id = st.nextId.f;
+      const row = { id, id_soggetto:fr.sog, id_verbo:fr.ver, id_complemento:fr.comp, creato:this.today() };
+      return {
+        db: { ...st.db, frasi: [...st.db.frasi, row] },
+        nextId: { ...st.nextId, f: id + 1 },
+        frase: { sog:null, ver:null, comp:null },
+      };
+    });
+    this.flash('Frase salvata nella tabella frasi');
+  }
+  deleteFrase(id) { this.setState(st => ({ db: { ...st.db, frasi: st.db.frasi.filter(f => f.id !== id) } })); this.flash('Frase eliminata'); }
+
+  // ---- strisce comunicative ----
+  saveStrisca() {
+    const nome = (this.state.striscaNome || '').trim();
+    if (!nome) { this.flash('Inserisci un nome per la striscia'); return; }
+    this.setState(st => {
+      const id = st.nextId.s;
+      const row = { id, nome, immagini: [], creato: this.today() };
+      return {
+        db: { ...st.db, strisce: [...st.db.strisce, row] },
+        nextId: { ...st.nextId, s: id + 1 },
+        striscaNome: '',
+      };
+    });
+    this.flash('Striscia \u00AB' + nome + '\u00BB salvata');
+  }
+
+  saveAbbinamento() {
+    const so = [
+      { value:'s1', label:'Striscia 1' }, { value:'s2', label:'Striscia 2' },
+      { value:'s3', label:'Striscia 3' }, { value:'s4', label:'Striscia 4' },
+    ];
+    const ao = [
+      { value:'a1', label:'Attività 1' }, { value:'a2', label:'Attività 2' },
+      { value:'a3', label:'Attività 3' }, { value:'a4', label:'Attività 4' },
+    ];
+    const sv = this.state.striscaSel || 's1', av = this.state.attivitaSel || 'a1';
+    const sl = (so.find(o => o.value === sv) || so[0]).label;
+    const al = (ao.find(o => o.value === av) || ao[0]).label;
+    this.flash(sl + ' + ' + al + ' \u2014 salvato in archivio');
+  }
+
+  renderVals() {
+    const st = this.state;
+    const TM = this.typeMeta;
+    const db = st.db;
+    const compById = id => db.componenti.find(c => c.id === id);
+
+    const screen = st.screen;
+    const isComunica = screen === 'comunica', isAttivita = screen === 'attivita', isFrasi = screen === 'frasi', isEsplora = screen === 'esplora';
+
+    // nav
+    const ind = (active) => ({ width:56, height:32, borderRadius:18, display:'grid', placeItems:'center', background: active ? '#FFDBCB' : 'transparent', transition:'background .15s' });
+    const navIcon = (active) => active ? '#3A0A00' : '#6E5F57';
+    const navLabel = (active) => ({ fontSize:11, fontWeight: active ? 700 : 500, color: active ? '#9C4A2B' : '#6E5F57', textAlign:'center', lineHeight:1.2 });
+
+    const tableTypeChip = (tipo) => { const m = TM[tipo]; return { background:m.cont, color:m.on, fontSize:12.5, fontWeight:700, padding:'4px 11px', borderRadius:8, display:'inline-block' }; };
+
+    // ---------- FRASI ----------
+    const compChipVM = (tipo, slot) => db.componenti.filter(c => c.tipo === tipo).map(c => {
+      const m = TM[tipo]; const sel = st.frase[slot] === c.id;
+      return {
+        id:c.id, parola:c.parola, selected:sel, checkColor:m.on,
+        onClick: () => this.pickFrase(slot, c.id),
+        style: { display:'inline-flex', alignItems:'center', height:36, padding: sel ? '0 13px 0 9px' : '0 14px', borderRadius:10, fontSize:14, fontWeight:600,
+          background: sel ? m.cont : '#FFF8F5', color: sel ? m.on : '#53433C',
+          border: sel ? '1px solid ' + m.cont : '1px solid #DBC8BF' },
+      };
+    });
+    const pickerGroups = [
+      { label:'Soggetto', tipo:'soggetto', slot:'sog' },
+      { label:'Verbo', tipo:'verbo', slot:'ver' },
+      { label:'Complemento', tipo:'complemento', slot:'comp' },
+    ].map(g => ({ label:g.label, dotStyle:{ width:11, height:11, borderRadius:11, background:TM[g.tipo].c }, chips: compChipVM(g.tipo, g.slot) }));
+
+    const previewChip = (id, tipo, fallback) => {
+      const m = TM[tipo]; const c = id ? compById(id) : null;
+      if (c) return { text:c.parola, style:{ background:m.cont, color:m.on, fontSize:15, fontWeight:700, padding:'7px 15px', borderRadius:11 } };
+      return { text:fallback, style:{ background:'transparent', color:'#A7958C', fontSize:15, fontWeight:600, padding:'7px 14px', borderRadius:11, border:'1.5px dashed #CDB9AF' } };
+    };
+    const previewChips = [
+      previewChip(st.frase.sog, 'soggetto', 'soggetto'),
+      previewChip(st.frase.ver, 'verbo', 'verbo'),
+      previewChip(st.frase.comp, 'complemento', 'complemento'),
+    ];
+    const rowMapping = 'id_soggetto: ' + (st.frase.sog ?? '\u2014') + '\nid_verbo: ' + (st.frase.ver ?? '\u2014') + '\nid_complemento: ' + (st.frase.comp ?? '\u2014');
+    const canSave = !!(st.frase.sog && st.frase.ver && st.frase.comp);
+
+    const striscaOptions = [
+      { value:'s1', label:'Striscia 1' }, { value:'s2', label:'Striscia 2' },
+      { value:'s3', label:'Striscia 3' }, { value:'s4', label:'Striscia 4' },
+    ];
+    const attivitaOptions = [
+      { value:'a1', label:'Attività 1' }, { value:'a2', label:'Attività 2' },
+      { value:'a3', label:'Attività 3' }, { value:'a4', label:'Attività 4' },
+    ];
+
+    const frasiVM = (rows) => rows.map(f => ({
+      id:f.id,
+      sog: (compById(f.id_soggetto)||{}).parola || '\u2014', sogChip: tableTypeChip('soggetto'),
+      ver: (compById(f.id_verbo)||{}).parola || '\u2014', verChip: tableTypeChip('verbo'),
+      comp: (compById(f.id_complemento)||{}).parola || '\u2014', compChip: tableTypeChip('complemento'),
+      creato: this.fmt(f.creato),
+      onDelete: () => this.deleteFrase(f.id),
+    }));
+    const frasiRows = frasiVM(db.frasi);
+
+    // ---------- ESPLORA ----------
+    const isModeFrasi = st.esplora.mode === 'frasi';
+    const isModeComp = st.esplora.mode === 'componenti';
+    const seg = (active) => ({ display:'flex', alignItems:'center', justifyContent:'center', height:44, padding:'0 20px', fontSize:14, fontWeight:600,
+      background: active ? '#F6DDCF' : 'transparent', color: active ? '#2B160C' : '#53433C' });
+    const esploraFrasiRows = frasiVM(db.frasi);
+    const componentiRows = db.componenti.map(c => ({ id:c.id, parola:c.parola, tipoLabel:TM[c.tipo].label, tipoChip: tableTypeChip(c.tipo), video:c.video }));
+
+    let esploraTitle, esploraCount;
+    if (isModeComp) { esploraTitle = 'Tabella componenti (dizionario completo)'; esploraCount = db.componenti.length + ' segni'; }
+    else { esploraTitle = 'Tutte le frasi salvate'; esploraCount = db.frasi.length + ' frasi'; }
+
+    return {
+      // nav
+      navComunica: () => this.setState({ screen:'comunica' }),
+      navAttivita: () => this.setState({ screen:'attivita' }),
+      navFrasi: () => this.setState({ screen:'frasi' }),
+      navEsplora: () => this.setState({ screen:'esplora' }),
+      navComunicaIndStyle: ind(isComunica), navComunicaIcon: navIcon(isComunica), navComunicaLabel: navLabel(isComunica),
+      navAttivitaIndStyle: ind(isAttivita), navAttivitaIcon: navIcon(isAttivita), navAttivitaLabel: navLabel(isAttivita),
+      navFrasiIndStyle: ind(isFrasi), navFrasiIcon: navIcon(isFrasi), navFrasiLabel: navLabel(isFrasi),
+      navEsploraIndStyle: ind(isEsplora), navEsploraIcon: navIcon(isEsplora), navEsploraLabel: navLabel(isEsplora),
+      dbTotal: db.componenti.length + db.frasi.length,
+
+      isComunica, isAttivita, isFrasi, isEsplora,
+      comunicaSoon: () => this.flash('Creazione strisce comunicative — in arrivo'),
+      addAttivita: () => this.flash('Caricamento media attività — in arrivo'),
+      striscaNome: st.striscaNome,
+      setStriscaNome: (e) => this.setState({ striscaNome: e.target.value }),
+      saveStrisca: () => this.saveStrisca(),
+      barTitle: isComunica ? 'Comunicazioni' : isAttivita ? 'Crea attività' : isFrasi ? 'Abbina striscie ed attività' : 'Esplora dati',
+      barSubtitle: isComunica ? 'Crea e gestisci le strisce comunicative.' : isAttivita ? 'Crea e gestisci le attività.' : isFrasi ? 'Collega soggetto, verbo e complemento per creare una frase.' : 'Consulta tutte le frasi salvate o l\u2019intera tabella componenti.',
+
+      // frasi
+      pickerGroups, previewChips, rowMapping,
+      striscaSel: st.striscaSel || 's1',
+      setStriscaSel: (e) => this.setState({ striscaSel: e.target.value }),
+      striscaOptions: striscaOptions,
+      striscaSelLabel: (striscaOptions.find(o => o.value === (st.striscaSel || 's1')) || striscaOptions[0]).label,
+      attivitaSel: st.attivitaSel || 'a1',
+      setAttivitaSel: (e) => this.setState({ attivitaSel: e.target.value }),
+      attivitaOptions: attivitaOptions,
+      attivitaSelLabel: (attivitaOptions.find(o => o.value === (st.attivitaSel || 'a1')) || attivitaOptions[0]).label,
+      saveFrase: () => this.saveAbbinamento(),
+      saveFraseStyle: { width:170, flexShrink:0, borderRadius:18, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:7,
+        background: canSave ? '#9C4A2B' : '#EBDDD4', color: canSave ? '#fff' : '#A7958C', fontSize:14.5, fontWeight:700 },
+      saveFraseIcon: canSave ? '#fff' : '#A7958C',
+      schemaFrasi: 'CREATE TABLE frasi (\n  id              INTEGER PRIMARY KEY AUTOINCREMENT,\n  id_soggetto     INTEGER REFERENCES componenti(id),\n  id_verbo        INTEGER REFERENCES componenti(id),\n  id_complemento  INTEGER REFERENCES componenti(id),\n  creato_il       TEXT DEFAULT (datetime(\'now\'))\n);',
+      frasiCount: db.frasi.length,
+      frasiRows, hasFrasi: frasiRows.length > 0, noFrasi: frasiRows.length === 0,
+
+      // esplora
+      esploraModeFrasi: () => this.setState(s => ({ esplora:{ ...s.esplora, mode:'frasi' } })),
+      esploraModeComp: () => this.setState(s => ({ esplora:{ ...s.esplora, mode:'componenti' } })),
+      isModeFrasi, isModeComp,
+      segFrasiStyle: seg(isModeFrasi),
+      segCompStyle: { ...seg(isModeComp), borderLeft:'1px solid #C9B3A9' },
+      esploraTitle, esploraCount,
+      esploraFrasiRows, esploraFrasiHas: esploraFrasiRows.length > 0, esploraFrasiEmpty: esploraFrasiRows.length === 0,
+      componentiRows,
+
+      // snackbar
+      snackShow: !!st.snack, snackMsg: st.snack || '',
+    };
+  }
+}
+</script>
+</body>
+</html>
