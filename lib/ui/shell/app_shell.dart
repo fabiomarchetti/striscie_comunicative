@@ -44,6 +44,9 @@ class AppShell extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.surface,
+      // La tastiera non deve ridimensionare il layout (il campo nome è in alto):
+      // evita l'overflow del NavigationRail quando la tastiera è aperta.
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Stack(
           children: [
